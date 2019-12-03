@@ -80,8 +80,7 @@ class PTTK_GTNC:
                 return ('Value = ' + str(arrSort[k-1])) 
     def Bai5(self):
         arr = []
-        result = []
-        s = 0
+        col = 0
         i = 0
         with open('bai5.txt') as file_data:
             for line in file_data:
@@ -90,9 +89,10 @@ class PTTK_GTNC:
                     line = line.strip()
                     line = list(line.split())
                     arr.append(list(map(int, line))) 
+                else:
+                    col = int(line)
         print(arr)
-        a.maxSum(arr, 5)
-  
+        a.maxSum(arr,col)
     def maxSum(self, dA, n): 
         arr =[]
         arrLable = []
@@ -104,7 +104,7 @@ class PTTK_GTNC:
             dA[1][1] = dA[1][1]+dA[0][0] 
             print( "dA[1][1] = ", dA[1][1] ) 
             if dA[1][0] > dA[1][1]:
-                arr.append(arrLable[1][0])
+                arr.append(arrLable[1][0]-arrLable[0][0])
             else:
                 arr.append(arrLable[1][1])
         for i in range(2, n): 
@@ -124,10 +124,56 @@ class PTTK_GTNC:
                     print("dA["+str(i)+"][" +str(j)+ "]  = ",dA[i][j])
         print (max(dA[n-1])) 
         print (arr) 
-
+        return max(dA[n-1])
+    def knapSack(self, W , wi , pi , n): 
+        arr = []
+        if n == 0 or W == 0 : 
+            return 0
+        if (wi[n-1] > W): 
+            print("hue = ", a.knapSack(W , wi , pi , n-1) )
+            return a.knapSack(W , wi , pi , n-1) 
+        else: 
+            # print(pi[n-1])
+            print("pi = ",pi[n-1] + a.knapSack(W-wi[n-1] , wi , pi , n-1))
+            # print("W = ", a.knapSack(W , wi , pi , n-1))
+            return max(pi[n-1] + a.knapSack(W-wi[n-1] , wi , pi , n-1), 
+                   a.knapSack(W , wi , pi , n-1)) 
+    def knapSack1(self, W, wt, val, n): 
+        K = [[0 for x in range(W+1)] for x in range(n+1)] 
+    
+        # Build table K[][] in bottom up manner 
+        for i in range(n+1): 
+            for w in range(W+1): 
+                if i==0 or w==0: 
+                    K[i][w] = 0
+                elif wt[i-1] <= w: 
+                    K[i][w] = max(val[i-1] + K[i-1][w-wt[i-1]],  K[i-1][w]) 
+                else: 
+                    K[i][w] = K[i-1][w] 
+        return K[n][W] 
+    def Bai6(self):
+        arr = []
+        M = 0
+        n = 0
+        i = 0 
+        with open('bai6.txt') as file_data:
+            for line in file_data:
+                i += 1
+                line = line.strip()
+                line = list(line.split())
+                line = list(map(int, line))
+                if i != 1:
+                    arr.append(line) 
+                else:
+                    M = line[0]
+                    n = line[1]
+        A = np.array(arr)
+        print(a.knapSack(M,A[:,0],A[:,1], n))  
+        pass
+   
 
 if __name__ == "__main__":
     a = PTTK_GTNC()
     # res =  a.Bai3()
     # print(res)
-    a.Bai5()
+    a.Bai6()
