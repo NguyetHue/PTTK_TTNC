@@ -42,7 +42,7 @@ class PTTK_GTNC:
         #1. thời gian đăng ký hạ cánh sớm nhất còn lưu trong cấu trúc
         timeLandingEarliest = "the earliest landing time: " + str(R[0])
         #2. thời gian đăng ký hạ cánh trể nhất còn lưu trong cấu trúc
-        timeLandingLatest = "the earliest landing time: " + str(R[len(R)-1])
+        timeLandingLatest = "the Latest landing time: " + str(R[len(R)-1])
         print(timeLandingLatest)
         pass
     def Bai2(self):
@@ -78,10 +78,56 @@ class PTTK_GTNC:
                 print(arrSort)
                 print("k = ", k )
                 return ('Value = ' + str(arrSort[k-1])) 
+    def Bai5(self):
+        arr = []
+        result = []
+        s = 0
+        i = 0
+        with open('bai5.txt') as file_data:
+            for line in file_data:
+                i += 1
+                if i != 1:
+                    line = line.strip()
+                    line = list(line.split())
+                    arr.append(list(map(int, line))) 
+        print(arr)
+        a.maxSum(arr, 5)
+  
+    def maxSum(self, dA, n): 
+        arr =[]
+        arrLable = []
+        arrLable = dA
+        arr.append(arrLable[0][0])
+        if n > 1: 
+            dA[1][0] = dA[1][0]+dA[0][0] 
+            print( "dA[1][0] = ", dA[1][0] )
+            dA[1][1] = dA[1][1]+dA[0][0] 
+            print( "dA[1][1] = ", dA[1][1] ) 
+            if dA[1][0] > dA[1][1]:
+                arr.append(arrLable[1][0])
+            else:
+                arr.append(arrLable[1][1])
+        for i in range(2, n): 
+            if dA[i][0]+dA[i-1][0] >= dA[i][0]+dA[i-1][1]: 
+                dA[i][0] = dA[i][0]+dA[i-1][0] 
+            else: 
+                dA[i][0] = dA[i][0]+dA[i-1][1]
+            print("dA["+str(i)+"][0] = ",dA[i][0])
+            dA[i][i] = dA[i][i] + dA[i-1][i-1] 
+            print("dA["+str(i)+"][" +str(i)+ "]  = ",dA[i][i])
+            for j in range(1, i): 
+                if dA[i][j]+dA[i-1][j-1] >= dA[i][j]+dA[i-1][j]: 
+                    dA[i][j] = dA[i][j] + dA[i-1][j-1] 
+                    print("dA["+str(i)+"][" +str(j)+ "]  = ",dA[i][j])
+                else: 
+                    dA[i][j] = dA[i][j]+dA[i-1][j] 
+                    print("dA["+str(i)+"][" +str(j)+ "]  = ",dA[i][j])
+        print (max(dA[n-1])) 
+        print (arr) 
 
 
 if __name__ == "__main__":
     a = PTTK_GTNC()
     # res =  a.Bai3()
     # print(res)
-    a.Bai1()
+    a.Bai5()
