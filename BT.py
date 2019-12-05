@@ -50,11 +50,11 @@ class PTTK_GTNC:
         # print("grid: ", grid)
         for item in range(items):
             grid.append(grid[item].copy())
-            # print("grid: ", grid)
+            print("grid: ", grid)
+            print("grid: ", grid)
             for k in range(weights[item], capacity + 1):
                 grid[item + 1][k] = max(grid[item][k], grid[item][k -weights[item]] + values[item])
-                # print("grid: ", grid)
-
+        # print("grid: ", grid)
         solution_value = grid[items][capacity]
         solution_weight = 0
         taken = []
@@ -65,15 +65,13 @@ class PTTK_GTNC:
                 taken.append(item - 1)
                 k -= weights[item - 1]
                 solution_weight += weights[item - 1]
-
+        print(grid)
         return solution_value, taken  
     def maxSum(self, dA, n): 
         arr =[]
         # arrLable = insert(dA)
-
         if n > 1: 
             dA[1][0] = dA[1][0]+dA[0][0] 
-            
             # print( "dA[1][0] = ", dA[1][0] )
             dA[1][1] = dA[1][1]+dA[0][0] 
             # print( "dA[1][1] = ", dA[1][1] ) 
@@ -193,6 +191,7 @@ class PTTK_GTNC:
                 print(arrSort)
                 print("k = ", k )
                 return ('Value = ' + str(arrSort[k-1])) 
+    
     def Bai5(self):
         arr = []
         arrold = []
@@ -211,7 +210,6 @@ class PTTK_GTNC:
         resultArray =a.maxSum(arr,col)
         indexs = []
         indexs1= []
-        maxD = 0
         j = 0
         for x in reversed(resultArray[1]):
             j += 1
@@ -220,7 +218,6 @@ class PTTK_GTNC:
             if j == 1:
                 indexs.append(arrold[m][x.index(max(x))])
                 indexs1.append(max(x))
-                
             else:
                 # print(arrold[m])
                 v = arrold[m][x.index(indexs1[j-2]-indexs[j-2])]
@@ -299,4 +296,4 @@ class PTTK_GTNC:
         a.JobScheduling(inputS, 3, n)
 if __name__ == "__main__": 
     a = PTTK_GTNC()
-    a.Bai5()
+    a.Bai6()
