@@ -50,22 +50,20 @@ class PTTK_GTNC:
         # print("grid: ", grid)
         for item in range(items):
             grid.append(grid[item].copy())
-            print("grid: ", grid)
-            print("grid: ", grid)
+
             for k in range(weights[item], capacity + 1):
                 grid[item + 1][k] = max(grid[item][k], grid[item][k -weights[item]] + values[item])
-        # print("grid: ", grid)
+                
         solution_value = grid[items][capacity]
         solution_weight = 0
         taken = []
         k = capacity
         for item in range(items, 0, -1):
             if grid[item][k] != grid[item - 1][k]:
-                # print("item: ", item)
                 taken.append(item - 1)
                 k -= weights[item - 1]
                 solution_weight += weights[item - 1]
-        print(grid)
+        print(solution_value, taken)
         return solution_value, taken  
     def maxSum(self, dA, n): 
         arr =[]
@@ -106,19 +104,22 @@ class PTTK_GTNC:
                 fractions[i] = capacity/weight[i]
                 max_value += value[i]*capacity/weight[i]
                 break
-        print (fractions)
-        print (max_value)
+        print ("fractions = ", fractions)
+        print ("max_value =",max_value )
         return max_value, fractions
-    def JobScheduling(self, arr, t, n): 
+    def JobScheduling(self, arr, arr1, t, n): 
         s = 0
-        print(arr[0][1])
+
         for i in range(n): 
-            for j in range(n - 1 - i): 
+            for j in range(n -1- i): 
                 if arr[j][1] < arr[j + 1][1]: 
-                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                    # print("arr["+str(j)+"][1] = "+str(arr[j][1] ), "arr["+str(j)+" + 1][1] = "+str(arr[j + 1][1]))
+                    arr[j], arr[j + 1] = arr1[j + 1], arr1[j]
+                    arr1[j], arr1[j + 1] = arr[j], arr[j+1]
+        # print("array = ", arr )
         result = [False] * t 
         job = ['-1'] * t 
-        for i in range(len(arr)): 
+        for i in range(len(arr)):         
             for j in range(min(t - 1, arr[i][2] - 1), -1, -1): 
                 if result[j] is False: 
                     result[j] = True
@@ -126,7 +127,8 @@ class PTTK_GTNC:
                     s += arr[i][1]
                     break
         print(job)
-        print(s) 
+        print(s)
+        return job, s
     def Bai1(self, k): 
         R = [37, 41, 46, 49, 56] 
         print ("Enter time: ")
@@ -273,6 +275,7 @@ class PTTK_GTNC:
     
     def Bai8(self):   
         arr = []
+        arr1 = []
         inputS = []
         n = 0
         i = 0 
@@ -284,16 +287,20 @@ class PTTK_GTNC:
                 line = list(map(int, line))
                 if i != 1:
                     arr.append(line) 
+                    arr1.append(line) 
                 else:
                     n = line[0]
         A = np.array(arr)
+        A1 = np.array(arr1)
         index = []
         for x in range(1,(len(A)+1)):
             index.append([x])
-        print(index)
+        # print(index)
         inputS = np.append(index,A,  axis=1)
+        inputtemp = np.append(index,A1,  axis=1)
         print(inputS)
-        a.JobScheduling(inputS, 3, n)
+        timeDealine = max(inputS[:,2])
+        a.JobScheduling(inputS,inputtemp,timeDealine, n)
 if __name__ == "__main__": 
     a = PTTK_GTNC()
-    a.Bai6()
+    a.Bai8()
