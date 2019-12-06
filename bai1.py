@@ -106,29 +106,30 @@ class AVL_Tree(object):
             return self.findNode(current.left, val)
         else:
             return self.findNode(current.right, val)
- def successor_node_right(self, n):
+    def successor_node_right(self, n):
         """Returns the node with the smallest key larger than this node's key, or None if this has the largest key in the tree."""
+        
         if n.right is not None:
-            return n.right.minimum()
+            return self.minValue(n.right)
         current = n.parent
         while current is not None:
             if n != current.right:
                 break
             n = current
             current = current.parent
-        return current
+        return current.val
 
     def successor_node_left(self, n):
         """Returns the node with the smallest key larger than this node's key, or None if this has the largest key in the tree."""
         if n.left is not None:
-            return n.left.minimum()
+            return self.minValue(n.left)
         current = n.parent
         while current is not None:
             if n != current.left:
                 break
             n = current
             current = current.parent
-        return current 
+        return current.val
     def findnext(self, t, root):
         """Return the node for key t if is in the tree, or None otherwise."""
         node = root
@@ -159,7 +160,5 @@ if __name__ == "__main__":
     #2. thời gian đăng ký hạ cánh trể nhất còn lưu trong cấu trúc
     timeLandingLatest = "3. the Latest landing time: " + str(maxvalue)
     print(myTree.findnext(53, tree).val)
-    print(myTree.successor_node_right(myTree.findnext(53, tree),tree))
+    print(myTree.successor_node_right(myTree.findnext(49, tree)))
 
-    
-    
