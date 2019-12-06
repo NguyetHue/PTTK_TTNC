@@ -158,8 +158,12 @@ if __name__ == "__main__":
     timeLandingEarliest = "\n2. the earliest landing time: " + str(minvalue)
     print(timeLandingEarliest)
     #2. thời gian đăng ký hạ cánh trể nhất còn lưu trong cấu trúc
+    t = int(input("Enter time now: "))
     timeLandingLatest = "3. the Latest landing time: " + str(maxvalue)
-    # print(myTree.findnext(53, tree).val)
-    print(myTree.successor_node_right(myTree.findnext(53, tree)))
-    print(myTree.successor_node_left(myTree.findnext(53, tree)))
+    # 4. Trả về thời điểm hạ cánh kế tiếp của thời điểm t cho trước, nếu t là giá trị lớn nhất trong cấu trúc thì -1 được trả về
+    timeNext = "4. Next landing time (t ="+str(t)+"): " + str(myTree.successor_node_right(myTree.findnext(t, tree)))
+    # 5. Trả về thời điểm hạ cánh trước đó của thời điểm t cho trước, nếu t là giá trị nhỏ nhất trong cấu trúc thì -1 được trả về.
+    timePrevious = "5. Previous landing time (t ="+str(t)+" ) : " + str(myTree.successor_node_left(myTree.findnext(t, tree)))
+    print(timeNext)
+    print(timePrevious)
 
