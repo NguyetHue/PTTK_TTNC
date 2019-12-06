@@ -59,6 +59,7 @@ class PTTK_GTNC:
         taken = []
         k = capacity
         for item in range(items, 0, -1):
+            print("item= ", item)
             if grid[item][k] != grid[item - 1][k]:
                 taken.append(item - 1)
                 k -= weights[item - 1]
@@ -74,6 +75,7 @@ class PTTK_GTNC:
             dA[1][1] = dA[1][1]+dA[0][0] 
             # print( "dA[1][1] = ", dA[1][1] ) 
         for i in range(2, n): 
+            print("i= ", i)
             if dA[i][0]+dA[i-1][0] >= dA[i][0]+dA[i-1][1]: 
                 dA[i][0] = dA[i][0]+dA[i-1][0] 
             else: 
@@ -82,6 +84,7 @@ class PTTK_GTNC:
             dA[i][i] = dA[i][i] + dA[i-1][i-1] 
             # print("dA["+str(i)+"][" +str(i)+ "]  = ",dA[i][i])
             for j in range(1, i): 
+                print("j= ", j)
                 if dA[i][j]+dA[i-1][j-1] >= dA[i][j]+dA[i-1][j]: 
                     dA[i][j] = dA[i][j] + dA[i-1][j-1] 
                     # print("dA["+str(i)+"][" +str(j)+ "]  = ",dA[i][j])
@@ -303,4 +306,4 @@ class PTTK_GTNC:
         a.JobScheduling(inputS,inputtemp,timeDealine, n)
 if __name__ == "__main__": 
     a = PTTK_GTNC()
-    a.Bai8()
+    a.Bai6()

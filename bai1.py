@@ -1,101 +1,165 @@
-import sys
-import numpy as np
-from numpy import linalg as la
-class PTTK_GTNC:
-    def __init__(self):
-        pass
-    def checkTime(self, k):
-        t = input()
-        if k > int(t):
-            print("Registration time has expired !")
-            print("Register new time: ")
-            return a.checkTime(k)
-        else:
-            return int(t)
-    def checkNextPrevious(self, R):
-        print("Enter time now : ")
-        timeNow = input()
-        timeNow = int(timeNow)
-        timeNext =""
-        timePrevious=""
-        timeold=""
-        if timeNow in R:
-            # 6. có bao nhiêu chuyến bay đã đăng ký từ thời điểm t trờ về trước
-            timeold =  "6. Number flight landing before time (t ="+str(timeNow)+" ) : " + str(R.index(timeNow))
-            
-            if R.index(timeNow) < len(R)-1 and R.index(timeNow) != 0:
-                # 4. Trả về thời điểm hạ cánh kế tiếp của thời điểm t cho trước, nếu t là giá trị lớn nhất trong cấu trúc thì -1 được trả về
-                timeNext = "4. Next landing time (t ="+str(timeNow)+"): " + str(R[R.index(timeNow)+1])
-                # 5. Trả về thời điểm hạ cánh trước đó của thời điểm t cho trước, nếu t là giá trị nhỏ nhất trong cấu trúc thì -1 được trả về.
-                timePrevious = "5. Previous landing time (t ="+str(timeNow)+" ) : " + str(R[R.index(timeNow)-1])
-                print(timeNext)
-                print(timePrevious)
-            elif R.index(timeNow) == 0:
-                timeNext = "4. Next landing time (t ="+str(timeNow)+"): " + str(R[R.index(timeNow)+1])
-                timePrevious = "5. Previous landing time (t ="+str(timeNow)+" is time start) : " + str(-1)
-                print(timeNext)
-                print(timePrevious)
-            elif R.index(timeNow) == len(R)-1:
-                timeNext = "4. Next landing time (t ="+str(timeNow)+" is time end) : " + str(-1)
-                timePrevious = "5. Previous landing time (t ="+str(timeNow)+" ) : " + str(R[R.index(timeNow)-1])
-                print(timeNext)
-                print(timePrevious)
-            
-            print(timeold)
-        else:
-            print("Time not found!!")
-            a.checkNextPrevious(R)
-    def Bai1(self, k):
-        R = [37, 41, 46, 49, 56] 
-        print ("Enter time: ")
-        t = a.checkTime(R[0])
-        kq = 1
-        temp = 0
-        for x in R:
-            ss = x-t # ss khoảng thời gian giữa đăng ký mới và csdl
-            if ss < k and ss > -k:          
-              kq = 0
-              temp = x 
+class TreeNode(object): 
+    def __init__(self, val): 
+        self.val = val 
+        self.left = None
+        self.right = None
+        self.height = 1
+        self.parent = None
+class AVL_Tree(object): 
+    # def __init__(self, val, left=None, right=None):
+    #   self.val = val ; self.left = left ; self.right = right 
+    def newNode(self, val): 
+        temp = TreeNode(0) 
+        temp.data = val 
+        temp.left = None
+        temp.right = None
+        return temp 
+    def checkTime(self, tree,k):
+        timenow = myTree.minValue(tree)
+        is_available = False
+        while True:
+            try:
+                t = int(input("Please enter time registration: "))
+            except ValueError:
+                print("Sorry, You must enter a number of characters.")
+                continue
             else:
-                if x > t:
-                   temp = x            
-        if kq == 1:
-            print("Registration successful!") 
-            if temp != 0:
-  
-                R.insert(R.index(temp),t)
-            else:
-                R.insert(len(R),t)
-            print(R)  
-        elif kq == 0:
-            print("Registration failed!") 
-            a.Bai1(k)
-        #1. thời gian đăng ký hạ cánh sớm nhất còn lưu trong cấu trúc
-        timeLandingEarliest = "2. the earliest landing time: " + str(R[0])
-        #2. thời gian đăng ký hạ cánh trể nhất còn lưu trong cấu trúc
-        timeLandingLatest = "3. the Latest landing time: " + str(R[len(R)-1])
-        print(timeLandingEarliest)
-        print(timeLandingLatest)
-        a.checkNextPrevious(R)
-    def cubes(self,a):
-        arr = a[0]
-        a.pop(0)
-        for y in arr:
-            temp = 0
-            for x in a:
-                if y in x:
-                    x.remove(y)
+                if timenow >= int(t):
+                    print("Registration time has expired !")
+                    continue
                 else:
-        
-                    print("y = ",y)
-                   
-        print(a)
-        if len(a[0]) <= 1 and len(a[1]) <= 1:
-            return arr[0]
+                    t = int(t)
+                    for x in range(t-(k), t+(k)):
+                        # print("x = "+ str(x),myTree.find(tree,x))
+                        if myTree.find(tree,x) == True:
+                            is_available = True
+                            print("Registration failed!")        
+                            break
+                        else:
+                            is_available = False
+                    if is_available == False:
+                        print("Registration successful!") 
+                        tree = myTree.insert(tree, t) 
+                        print("{0} ".format(tree.val), end="") 
+                        self.preOrder(tree.left) 
+                        self.preOrder(tree.right)
+                        return tree
+    def insert(self, root, key): 
+        if not root: 
+            return TreeNode(key) 
+        elif key < root.val: 
+            lchild  = self.insert(root.left, key)
+            root.left = lchild
+            lchild.parent = root
+        else: 
+            lchild  = self.insert(root.right, key)
+            root.right = lchild
+            lchild.parent = root
+        root.height = 1 + max(self.getHeight(root.left), 
+                           self.getHeight(root.right)) 
+  
+        return root 
+    def getHeight(self, root): 
+        if not root: 
+            return 0
+        return root.height 
+        if not root: 
+            return 0
+        return self.getHeight(root.left) - self.getHeight(root.right) 
+  
+    def preOrder(self, root): 
+  
+        if not root: 
+            return
+ 
+        print("{0} ".format(root.val), end="") 
+        self.preOrder(root.left) 
+        self.preOrder(root.right) 
+    def minValue(self,root): 
+        current = root 
+        # loop down to find the lefmost leaf 
+        while(current.left is not None): 
+            current = current.left 
+        return current.val
+    def maxValue(self, root): 
+        # Base case  
+        if (root == None):  
+            return 0
+        res = root.val 
+        lres = myTree.maxValue(root.left)  
+        rres = myTree.maxValue(root.right) 
+        if (lres > res): 
+            res = lres  
+        if (rres > res):  
+            res = rres  
+        return res  
+    def find(self, root,val):
+        return self.findNode(root, val)
+
+    def findNode(self, root, val):
+        current = root 
+        if current is None:
+            return False
+        elif val == current.val:
+            return True
+        elif val < current.val:
+            return self.findNode(current.left, val)
         else:
-            return -1
+            return self.findNode(current.right, val)
+ def successor_node_right(self, n):
+        """Returns the node with the smallest key larger than this node's key, or None if this has the largest key in the tree."""
+        if n.right is not None:
+            return n.right.minimum()
+        current = n.parent
+        while current is not None:
+            if n != current.right:
+                break
+            n = current
+            current = current.parent
+        return current
+
+    def successor_node_left(self, n):
+        """Returns the node with the smallest key larger than this node's key, or None if this has the largest key in the tree."""
+        if n.left is not None:
+            return n.left.minimum()
+        current = n.parent
+        while current is not None:
+            if n != current.left:
+                break
+            n = current
+            current = current.parent
+        return current 
+    def findnext(self, t, root):
+        """Return the node for key t if is in the tree, or None otherwise."""
+        node = root
+        while node is not None:
+            if t == node.val:
+                return node
+            elif t < node.val:
+                node = node.left
+            else:
+                node = node.right
+        return None
+# Driver program to test above function 
 if __name__ == "__main__": 
-    a = PTTK_GTNC()
-    # a.Bai1(4)
-    b = [[100,100,87],[13,100,6],[13,100,94]]
-    print(a.cubes(b))
+    myTree = AVL_Tree() 
+    root = None
+    tree = None
+    root = myTree.insert(root, 37) 
+    root = myTree.insert(root, 41) 
+    root = myTree.insert(root, 46) 
+    root = myTree.insert(root, 49) 
+    root = myTree.insert(root, 56) 
+    tree = myTree.checkTime(root,3)
+    maxvalue = myTree.maxValue(tree)
+    minvalue = myTree.minValue(tree)
+    #1. thời gian đăng ký hạ cánh sớm nhất còn lưu trong cấu trúc
+    timeLandingEarliest = "\n2. the earliest landing time: " + str(minvalue)
+    print(timeLandingEarliest)
+    #2. thời gian đăng ký hạ cánh trể nhất còn lưu trong cấu trúc
+    timeLandingLatest = "3. the Latest landing time: " + str(maxvalue)
+    print(myTree.findnext(53, tree).val)
+    print(myTree.successor_node_right(myTree.findnext(53, tree),tree))
+
+    
+    
