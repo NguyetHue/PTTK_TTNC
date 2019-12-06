@@ -106,9 +106,7 @@ class AVL_Tree(object):
             return self.findNode(current.left, val)
         else:
             return self.findNode(current.right, val)
-    def successor_node_right(self, n):
-        """Returns the node with the smallest key larger than this node's key, or None if this has the largest key in the tree."""
-        
+    def successor_node_next(self, n):
         if n.right is not None:
             return self.minValue(n.right)
         current = n.parent
@@ -119,8 +117,7 @@ class AVL_Tree(object):
             current = current.parent
         return current.val
 
-    def successor_node_left(self, n):
-        """Returns the node with the smallest key larger than this node's key, or None if this has the largest key in the tree."""
+    def successor_node_previous(self, n):
         if n.left is not None:
             return self.minValue(n.left)
         current = n.parent
@@ -130,8 +127,30 @@ class AVL_Tree(object):
             n = current
             current = current.parent
         return current.val
+    def size(self,node): 
+        if node is None: 
+            return 0 
+        else: 
+            return (self.size(node.left)+ 1 + self.size(node.right)) 
+    def rank(self,root,t):
+        res = 0
+        while root:
+            desc = -1
+            if root.left is not None:
+                desc =  self.size(root.left)
+               
+            if root.val > t:
+                # res = res  + desc + 1 + 1
+                root = root.left
+            elif root.val < t:
+                res = res  + desc + 1 + 1
+                root = root.right
+            else:
+                res = res +  desc+ 1
+                break
+        return res
+        
     def findnext(self, t, root):
-        """Return the node for key t if is in the tree, or None otherwise."""
         node = root
         while node is not None:
             if t == node.val:
@@ -158,12 +177,26 @@ if __name__ == "__main__":
     timeLandingEarliest = "\n2. the earliest landing time: " + str(minvalue)
     print(timeLandingEarliest)
     #2. thời gian đăng ký hạ cánh trể nhất còn lưu trong cấu trúc
-    t = int(input("Enter time now: "))
     timeLandingLatest = "3. the Latest landing time: " + str(maxvalue)
-    # 4. Trả về thời điểm hạ cánh kế tiếp của thời điểm t cho trước, nếu t là giá trị lớn nhất trong cấu trúc thì -1 được trả về
-    timeNext = "4. Next landing time (t ="+str(t)+"): " + str(myTree.successor_node_right(myTree.findnext(t, tree)))
-    # 5. Trả về thời điểm hạ cánh trước đó của thời điểm t cho trước, nếu t là giá trị nhỏ nhất trong cấu trúc thì -1 được trả về.
-    timePrevious = "5. Previous landing time (t ="+str(t)+" ) : " + str(myTree.successor_node_left(myTree.findnext(t, tree)))
-    print(timeNext)
-    print(timePrevious)
+    print(timeLandingLatest)
+    t = int(input("Enter time now: "))
+    if myTree.findnext(t, tree) == None:
+        print("time not found!!!!")
+    else:
+        if t == maxvalue: 
+            timeNext = "4. Next landing time (t ="+str(t)+" is time end) : " + str(-1)
+            timePrevious = "5. Previous landing time (t ="+str(t)+" ) : " + str(myTree.successor_node_previous(myTree.findnext(t, tree)))
+        elif t == minvalue: 
+            # 4. Trả về thời điểm hạ cánh kế tiếp của thời điểm t cho trước, nếu t là giá trị lớn nhất trong cấu trúc thì -1 được trả về
+            timeNext = "4. Next landing time (t ="+str(t)+"): " + str(myTree.successor_node_next(myTree.findnext(t, tree)))
+            # 5. Trả về thời điểm hạ cánh trước đó của thời điểm t cho trước, nếu t là giá trị nhỏ nhất trong cấu trúc thì -1 được trả về.
+            timePrevious = "5. Previous landing time (t ="+str(t)+" is time start) : " + str(-1)
+        else:
+            timeNext = "4. Next landing time (t ="+str(t)+"): " + str(myTree.successor_node_next(myTree.findnext(t, tree)))
+            timePrevious = "5. Previous landing time (t ="+str(t)+" ) : " + str(myTree.successor_node_previous(myTree.findnext(t, tree)))
+        # 6. có bao nhiêu chuyến bay đã đăng ký từ thời điểm t trờ về trước
+        timeold =  "6. Number flight landing before time (t ="+str(t)+" ) : " + str(myTree.rank( tree,t))
+        print(timeNext)
+        print(timePrevious)
+        print(timeold)
 
