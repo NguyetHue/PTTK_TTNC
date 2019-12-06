@@ -159,6 +159,7 @@ if __name__ == "__main__":
     print(timeLandingEarliest)
     #2. thời gian đăng ký hạ cánh trể nhất còn lưu trong cấu trúc
     timeLandingLatest = "3. the Latest landing time: " + str(maxvalue)
-    print(myTree.findnext(53, tree).val)
-    print(myTree.successor_node_right(myTree.findnext(49, tree)))
+    # print(myTree.findnext(53, tree).val)
+    print(myTree.successor_node_right(myTree.findnext(53, tree)))
+    print(myTree.successor_node_left(myTree.findnext(53, tree)))
 
